@@ -1,0 +1,5 @@
+cd C:\Users\k24682\Desktop
+
+java MouseMover
+
+pause
