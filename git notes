@@ -1,0 +1,654 @@
+git config --global -e
+
+$ git config --global user.name "Victor"
+$ git config --global user.email victor@example.com
+
+Notepad++ ~/.bash_profile
+
+alias npp='notepad++ -multiInst -nosession'
+
+To test 
+git config --global -e
+git config --global --list
+
+$ git config --global diff.tool p4merge
+$ git config --global difftool.p4merge.path "C:/Program Files/Perforce/p4merge.exe"
+
+$ git config --global difftool.prompt false
+
+Add/Commit
+git add example.txt
+git commit -m "adding examplr file"
+
+Alias
+git config --global alias.hist "log --oneline --graph --decorate --all"
+alias.hist=log --oneline --graph --decorate --all
+
+Rename/Delete
+npp example.txt
+ git add example.txt
+ git commit -m "adding example file"
+ $ ls
+ example.txt  LICENCE.md  Readme.md
+
+ git mv example.txt demo.txt---rename
+ git commit -m "Renaming example file name to demo"
+
+ git rm demo.txt---delete
+ git commit -m "deleting demo"
+ 
+do commit after rename/delete 
+
+Managing the file outside of GIT
+mv License.md License.txt
+git status
+git add -u
+git add -A  ---to track all the files outside of the git
+git commit -m "adding files from outside to git"
+
+to remove outside git
+rm myfile.txt
+git add -u
+git commit -m "myfile is deleted"
+
+Ignoring file/folders git dir while commiting
+ npp app.log
+ npp .gitignore
+ file--app.log(file name)
+       *.log(all log files)
+ git add .gitignore
+ git commit -m "Adding ignore file"
+
+Comparing(git diff)
+git diff e446bf3 HEAD (commit id)
+git difftool e446bf3 HEAD (p4merge)
+
+git diff
+git difftool
+git help diff 
+
+Branching/ Merging
+ Types
+ Fastforward
+ automatic merge
+ manual
+ 
+git branch
+git checkout -b updates ----(to create a new branch updates)
+npp Readme.md
+git add .
+git commit -m "adding updates from branch"
+git hist
+* ea230bc (HEAD -> updates) adding updates from branch
+* 673366c (master) Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+git diff updates master
+
+git checkout master
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (updates)
+$ git checkout master
+Switched to branch 'master'
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+
+git hist
+$ git hist
+* ea230bc (updates) adding updates from branch
+* 673366c (HEAD -> master) Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+To merge
+git merge updates master
+
+git hist
+* ea230bc (HEAD -> master, updates) adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+To delete
+git branch -d updates
+
+git branch
+git hist
+$ git hist
+* ea230bc (HEAD -> master) adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+ 
+Special Markers(pointers)
+HEAD (Points to last commit of current branch)
+ HEAD can be moved
+
+
+Conflict
+
+git checkout -b verybad
+git branch -a
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (verybad)
+$ git branch
+  master
+* verybad
+
+npp README.md -- change the file contents in verybad branch
+
+git commit -am "very bad update" --(fastforward commit)
+
+git checkout master
+npp README.md -- change the file contents in master branch"
+git commit -am "causing effect"
+git merge verybad
+$ git merge verybad
+Auto-merging Readme.md
+CONFLICT (content): Merge conflict in Readme.md
+Automatic merge failed; fix conflicts and then commit the result.
+git mergetool
+git commit -m "Resolving conflict"
+
+git hist
+$ git hist
+* 783e90e (HEAD -> master) updating ignore to delete orig files
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+
+Tagging
+Make special occassions 
+Tag are labels to an arbituary commit by default if you don't specify
+
+git tag mytag
+git tag --list
+
+git hist
+$ git hist
+* 783e90e (HEAD -> master, tag: mytag) updating ignore to delete orig files
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+git tag -d mytag
+
+git tag -a v1.0 -m "Release 1.0"
+
+git tag --list
+v1.0
+
+git hist
+$git hist
+* 783e90e (HEAD -> master, tag: v1.0) updating ignore to delete or
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+git show v1.0
+$ git show v1.0
+tag v1.0
+Tagger: victor <victoremmanuel.k@gmail.com>
+Date:   Tue Aug 1 19:57:35 2017 +0530
+
+Release 1.0
+
+commit 783e90edd4d8e3d8f38965c2e2f96cf7b736d80b (HEAD -> master, t
+Author: victor <victoremmanuel.k@gmail.com>
+Date:   Tue Aug 1 19:49:34 2017 +0530
+
+    updating ignore to delete orig files
+
+diff --git a/.gitignore b/.gitignore
+index 0abbcd7..1c63482 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,2 +1,3 @@
+ app.log
+-*.log
+\ No newline at end of file
++*.log
++*.orig
+\ No newline at end of file
+:...skipping...
+tag v1.0
+Tagger: victor <victoremmanuel.k@gmail.com>
+Date:   Tue Aug 1 19:57:35 2017 +0530
+
+Release 1.0
+
+commit 783e90edd4d8e3d8f38965c2e2f96cf7b736d80b (HEAD -> master, tag: v1.0)
+Author: victor <victoremmanuel.k@gmail.com>
+Date:   Tue Aug 1 19:49:34 2017 +0530
+
+    updating ignore to delete orig files
+
+diff --git a/.gitignore b/.gitignore
+index 0abbcd7..1c63482 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,2 +1,3 @@
+ app.log
+-*.log
+\ No newline at end of file
++*.log
++*.orig
+\ No newline at end of file
+
+
+
+Stashing
+
+npp README.md (edit the file)
+git status 
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+
+git stash
+$ git stash
+Saved working directory and index state WIP on master: 783e90e updo delete orig files
+
+$ git stash list
+stash@{0}: WIP on master: 783e90e updating ignore to delete orig f
+
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+$ npp LISCENCE.md ---(edit another file)
+
+$ git commit -am "updating the license file"
+[master d25bddd] updating the license file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+git stash pop
+$ git stash pop
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Dropped refs/stash@{0} (39a6e97924a1c3ebbdd9f339e4740afc17ac44aa)
+
+
+$ git commit -am "updating readme again"
+[master 5b4c9c9] updating readme again
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+ 
+ $ git status
+On branch master
+nothing to commit, working tree clean
+
+
+Reset/Reflog
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ npp README.md
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git add
+Nothing specified, nothing added.
+Maybe you wanted to say 'git add .'?
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git add .
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   Readme.md
+
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ npp Readme.md
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   Readme.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hist
+* 5b4c9c9 (HEAD -> master) updating readme again
+* d25bddd updating the license file
+* 783e90e (tag: v1.0) updating ignore to delete orig files
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git reset 783e90e --soft
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   LICENSE.txt
+        modified:   Readme.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hist
+* 783e90e (HEAD -> master, tag: v1.0) updating ignore to delete or
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+        modified:   LICENSE.txt
+        modified:   Readme.md
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   Readme.md
+
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git reset 8def1ba --mixed
+Unstaged changes after reset:
+M       .gitignore
+M       LICENSE.txt
+M       Readme.md
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hit
+git: 'hit' is not a git command. See 'git --help'.
+
+Did you mean this?
+        hist
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hist
+* 783e90e (tag: v1.0) updating ignore to delete orig files
+*   8def1ba (HEAD -> master) Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working d
+
+        modified:   .gitignore
+        modified:   LICENSE.txt
+        modified:   Readme.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git reset 306c45b --hard
+HEAD is now at 306c45b adding the files from outside of the git
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        app.log
+
+nothing added to commit but untracked files present (use "git add"
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hist
+* 783e90e (tag: v1.0) updating ignore to delete orig files
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b (HEAD -> master) adding the files from outside of the gi
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git log --online
+fatal: unrecognized argument: --online
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git log --oneline
+306c45b (HEAD -> master) adding the files from outside of the git
+21a1077 deleting demo
+83dd2e7 Renaming example file name to demo
+8010f25 adding examplr file
+5eaa4e4 Udating Readme
+e446bf3 Adding LICENCE.md
+95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git reflog
+306c45b (HEAD -> master) HEAD@{0}: reset: moving to 306c45b
+8def1ba HEAD@{1}: reset: moving to 8def1ba
+783e90e (tag: v1.0) HEAD@{2}: reset: moving to 783e90e
+5b4c9c9 HEAD@{3}: commit: updating readme again
+d25bddd HEAD@{4}: commit: updating the license file
+783e90e (tag: v1.0) HEAD@{5}: reset: moving to HEAD
+783e90e (tag: v1.0) HEAD@{6}: commit: updating ignore to delete or
+8def1ba HEAD@{7}: commit (merge): Resolving conflict
+a2634df HEAD@{8}: commit: causing conflicts
+ea230bc HEAD@{9}: checkout: moving from verybad to master
+492d861 (verybad) HEAD@{10}: commit: very bad update
+ea230bc HEAD@{11}: checkout: moving from master to verybad
+ea230bc HEAD@{12}: merge updates: Fast-forward
+673366c HEAD@{13}: checkout: moving from updates to master
+ea230bc HEAD@{14}: commit: adding updates from branch
+673366c HEAD@{15}: checkout: moving from master to updates
+673366c HEAD@{16}: commit: Adding ignore file
+5a51ac7 HEAD@{17}: commit: myfile is deleted
+306c45b (HEAD -> master) HEAD@{18}: commit: adding the files from  git
+21a1077 HEAD@{19}: commit: deleting demo
+83dd2e7 HEAD@{20}: commit: Renaming example file name to demo
+8010f25 HEAD@{21}: commit: adding examplr file
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git reset --hard 783e90e
+HEAD is now at 783e90e updating ignore to delete orig files
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git hist
+* 783e90e (HEAD -> master, tag: v1.0) updating ignore to delete or
+*   8def1ba Resolving conflict
+|\
+| * 492d861 (verybad) very bad update
+* | a2634df causing conflicts
+|/
+* ea230bc adding updates from branch
+* 673366c Adding ignore file
+* 5a51ac7 myfile is deleted
+* 306c45b adding the files from outside of the git
+* 21a1077 deleting demo
+* 83dd2e7 Renaming example file name to demo
+* 8010f25 adding examplr file
+* 5eaa4e4 Udating Readme
+* e446bf3 Adding LICENCE.md
+* 95e11f2 First file in demo repo
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+VICTOR@victor-pc MINGW64 ~/Desktop/git_practice/demo (master)
+$
+
+
+
